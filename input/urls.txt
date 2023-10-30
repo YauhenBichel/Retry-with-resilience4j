@@ -1,0 +1,10 @@
+https://httpstat.us/101
+https://httpstat.us/200
+https://httpstat.us/201
+https://httpstat.us/300
+https://httpstat.us/301
+https://httpstat.us/400
+https://httpstat.us/401
+https://httpstat.us/403
+https://httpstat.us/404
+https://httpstat.us/500
