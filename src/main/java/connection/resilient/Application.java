@@ -5,7 +5,6 @@ import connection.resilient.model.UrlState;
 import connection.resilient.repository.TextFileUrlRepository;
 import connection.resilient.repository.UrlRepository;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;

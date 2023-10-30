@@ -87,7 +87,6 @@ public class HttpClientWithRetry {
      * @param urlState url
      */
     public void retryGetHttpResponseCode(UrlState urlState, CountDownLatch latch) {
-        System.out.println("Thread is " + Thread.currentThread());
         getHttpCodeWithRetry.apply(urlState);
         latch.countDown();
         System.out.println(urlState.toString());
