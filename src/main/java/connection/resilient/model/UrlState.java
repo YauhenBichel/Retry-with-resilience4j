@@ -1,5 +1,6 @@
 package connection.resilient.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ public class UrlState {
     public UrlState(UUID id, String url) {
         this.id = id;
         this.url = url;
+        retryRecords = new ArrayList<>();
     }
 
     public String getUrl() {
@@ -28,6 +30,7 @@ public class UrlState {
         final StringBuffer sb = new StringBuffer("UrlState{");
         sb.append("id=").append(id);
         sb.append(", url='").append(url).append('\'');
+
         sb.append(", retryRecords amount=").append(retryRecords.size());
         sb.append(", retryRecords=").append(retryRecords);
         sb.append('}');

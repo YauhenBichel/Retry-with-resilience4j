@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
 
 /**
@@ -27,7 +28,8 @@ public class HttpClientWithRetry {
     public HttpClientWithRetry(ResilienceConfiguration resilienceConfig) {
         getHttpCodeWithRetry = Retry.decorateFunction(resilienceConfig.getRetry(this.toString()), (url) -> {
             int httpStatusCode = getHttpResponseCode(url);
-            logger.info("URL: " + url + ". Http response code: " + httpStatusCode);
+            System.out.println("Thread: " + Thread.currentThread() + ". URL: " + url + ". Http response code: " + httpStatusCode);
+            logger.info("Thread: " + Thread.currentThread() + ". URL: " + url + ". Http response code: " + httpStatusCode);
             return httpStatusCode;
         });
     }
@@ -74,6 +76,7 @@ public class HttpClientWithRetry {
 
         RetryRecord record = new RetryRecord(UUID.randomUUID(), LocalDateTime.now(), httpCode, status);
         logger.debug(record);
+        System.out.println("Thread is " + Thread.currentThread() + ". Retry: " + record);
         retries.add(new RetryRecord(UUID.randomUUID(), LocalDateTime.now(), httpCode, status));
 
         urlState.setRetryRecords(retries);
@@ -83,17 +86,10 @@ public class HttpClientWithRetry {
      * Fetches http response code with retry
      * @param urlState url
      */
-    public void retryGetHttpResponseCode(UrlState urlState) {
+    public void retryGetHttpResponseCode(UrlState urlState, CountDownLatch latch) {
+        System.out.println("Thread is " + Thread.currentThread());
         getHttpCodeWithRetry.apply(urlState);
-    }
-
-    /**
-     * Fetches http response codes with retry
-     * @param urls list of url
-     */
-    public void retryGetHttpResponseCode(List<UrlState> urls) {
-        for (UrlState urlState : urls) {
-            retryGetHttpResponseCode(urlState);
-        }
+        latch.countDown();
+        System.out.println(urlState.toString());
     }
 }
